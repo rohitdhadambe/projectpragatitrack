@@ -34,10 +34,18 @@ export const AuthProvider = ({ children }) => {
             throw new Error(data.detail || "Login failed")
         }
 
-        localStorage.setItem("user", JSON.stringify(data))
-        setUser(data)
+        const normalized = {
+            id: data.user_id ?? data.id,
+            user_id: data.user_id ?? data.id,
+            role: data.role,
+            email: data.email,
+            message: data.message,
+        }
 
-        return data
+        localStorage.setItem("user", JSON.stringify(normalized))
+        setUser(normalized)
+
+        return normalized
     }
 
     const logout = () => {
