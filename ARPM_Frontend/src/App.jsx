@@ -15,6 +15,7 @@ import ReviewerProposalDetailsPage from "./components/Reviewer/Proposal/Proposal
 import CommitteeHome from "./components/Committee/Home/Home"
 import CommitteeProposalPage from "./components/Committee/Proposal/Main/ProposalPage"
 import CommitteeProposalDetailsPage from "./components/Committee/Proposal/Proposal Details/ProposalDetailsPage"
+import Communication from "./components/Communication/Communication";
 
 
 
@@ -148,6 +149,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/communication" element={<Communication />} />
 
     </Routes>
   )
