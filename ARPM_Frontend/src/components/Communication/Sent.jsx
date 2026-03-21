@@ -14,13 +14,14 @@ export default function Sent() {
       .then(data => setUsers(data));
   }, []);
 
-  // Fetch sent messages
+  // Fetch and group messages
   useEffect(() => {
     if (!userId) return;
 
     fetch(`http://127.0.0.1:8000/messages/sent/${userId}`)
       .then(res => res.json())
       .then(data => {
+
         const grouped = {};
 
         data.forEach(msg => {
@@ -38,12 +39,37 @@ export default function Sent() {
 
         setMessages(Object.values(grouped));
       });
+
   }, [userId]);
 
-  // 🔥 helper: get email
+  // 🔥 Get email from ID
   const getEmail = (id) => {
-    const user = users.find(u => u.id === id);
-    return user ? user.email : id;
+    const u = users.find(user => user.id === id);
+    return u ? u.email : id;
+  };
+
+  // 🔥 Format time
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+
+    const isYesterday =
+      date.toDateString() === yesterday.toDateString();
+
+    const time = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    if (isToday) return `Today, ${time}`;
+    if (isYesterday) return `Yesterday, ${time}`;
+
+    return date.toLocaleDateString() + ", " + time;
   };
 
   return (
@@ -54,6 +80,7 @@ export default function Sent() {
 
       {messages.map(msg => (
         <div key={msg.id} className="border p-4 mb-3 rounded shadow">
+
           <p>
             <b>To:</b>{" "}
             {msg.receivers.map(id => getEmail(id)).join(", ")}
@@ -72,6 +99,12 @@ export default function Sent() {
               View Attachment
             </a>
           )}
+
+          {/* 🕒 TIME */}
+          <p className="text-xs font-bold text-gray-600 text-right">
+            {formatTime(msg.created_at)}
+          </p>
+
         </div>
       ))}
     </div>

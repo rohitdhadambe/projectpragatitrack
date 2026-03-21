@@ -23,10 +23,34 @@ export default function Inbox() {
       .then(data => setMessages(data));
   }, [userId]);
 
-  // 🔥 helper: get email by id
+  // 🔥 Get email from user ID
   const getEmail = (id) => {
-    const user = users.find(u => u.id === id);
-    return user ? user.email : id;
+    const u = users.find(user => user.id === id);
+    return u ? u.email : id;
+  };
+
+  // 🔥 Format time
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+
+    const isYesterday =
+      date.toDateString() === yesterday.toDateString();
+
+    const time = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    if (isToday) return `Today, ${time}`;
+    if (isYesterday) return `Yesterday, ${time}`;
+
+    return date.toLocaleDateString() + ", " + time;
   };
 
   return (
@@ -37,6 +61,7 @@ export default function Inbox() {
 
       {messages.map(msg => (
         <div key={msg.id} className="border p-4 mb-3 rounded shadow">
+
           <p><b>From:</b> {getEmail(msg.sender_id)}</p>
           <p><b>Subject:</b> {msg.subject}</p>
           <p className="mb-2">{msg.body}</p>
@@ -51,6 +76,12 @@ export default function Inbox() {
               View Attachment
             </a>
           )}
+
+          {/* 🕒 TIME */}
+          <p className="text-xs font-bold text-gray-600 text-right">
+            {formatTime(msg.created_at)}
+          </p>
+
         </div>
       ))}
     </div>
