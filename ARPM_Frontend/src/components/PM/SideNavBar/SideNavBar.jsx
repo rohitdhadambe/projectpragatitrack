@@ -49,7 +49,10 @@ export default function SideNavBarInvestigator({ isSidebarOpen, setIsSidebarOpen
                             </Link>
                         </li>
                         <li>
-                            <Link to="/communication">Communication</Link>
+                            <Link to="/communication"  
+                            className={linkStyle("/manager/communication")}
+
+                            >Communication</Link>
                         </li>
 
                         {/*   <li>
