@@ -184,7 +184,11 @@ export default function Compose() {
           <input
             type="file"
             onChange={(e) => setFile(e.target.files[0])}
-            className="border rounded-lg p-2 w-full"
+            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
+                      focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500
+                      file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
+                      file:text-sm file:font-medium file:bg-purple-600 file:text-white
+                      hover:file:bg-purple-700"
           />
         </div>
 
